@@ -38,7 +38,7 @@ class UsersService:
         if data:
             return self.get_user_by_login(data.get('email'))
 
-    def update_user(self, data:dict, refresh_token):
+    def update_user(self, data: dict, refresh_token):
         user = self.get_user_by_token(refresh_token)
         if user:
             self.dao.update(login=user.email, data=data)
@@ -47,7 +47,7 @@ class UsersService:
     def update_password(self, data, refresh_token):
         user = self.get_user_by_token(refresh_token)
         if user:
-            self.dao.update(login=user.email, data={"password":generate_password_hash(data.get('password_2'))})
+            self.dao.update(login=user.email, data={"password": generate_password_hash(data.get('password_2'))})
             return self.check(login=user.email, password=data.get('password_2'))
 
 

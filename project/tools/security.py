@@ -9,8 +9,6 @@ import jwt
 from flask import current_app
 
 
-
-
 def __generate_password_digest(password: str) -> bytes:
     return hashlib.pbkdf2_hmac(
         hash_name="sha256",
@@ -28,9 +26,7 @@ def compare_password_hash(password_hash, other_password) -> bool:
     return password_hash == generate_password_hash(other_password)
 
 
-
 def generate_token(email, password, password_hash=None, is_refresh=False):
-
 
         if email is None:
             return None
@@ -44,16 +40,16 @@ def generate_token(email, password, password_hash=None, is_refresh=False):
             "password": password
         }
 
-        # 15min for access_token
-        min15 = datetime.datetime.utcnow() * datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])
+        # 130day for refresh_token
+        min15 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])
         data["exp"] = calendar.timegm(min15.timetuple())
         access_token = jwt.encode(data, key=current_app.config['SECRET_KEY'],
-                                            algorithm=current_app.config["ALGORTHM"])
+                                        algorithm=current_app.config["ALGORITHM"])
 
-        days130 = datetime.datetime.utcnow() * datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])
+        days130 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_DAYS'])
         data["exp"] = calendar.timegm(days130.timetuple())
         refresh_token = jwt.encode(data, key=current_app.config['SECRET_KEY'],
-                                         algorithm=current_app.config["ALGORTHM"])
+                                         algorithm=current_app.config["ALGORITHM"])
 
         return {
               "access_token": access_token,

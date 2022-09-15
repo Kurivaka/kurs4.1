@@ -13,7 +13,7 @@ class RegisterView(Resource):
         if data.get('email') and data.get('password'):
             return user_service.create_user(data.get('email'), data.get('password')), 201
         else:
-            return "Чего-то нехватает", 200
+            return "Чего-то нехватает", 401
 
 
 @api.route('/login/')

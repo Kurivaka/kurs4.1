@@ -20,7 +20,7 @@ movie: Model = api.model('Фильмы', {
     'year': fields.Integer(required=True, max_length=100),
     'rating': fields.Float(required=True, max_length=7.8),
     'genre': fields.Nested(genre),
-    'director':fields.Nested(director)
+    'director': fields.Nested(director)
 })
 
 user: Model = api.model('Пользователь', {
